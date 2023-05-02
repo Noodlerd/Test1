@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class UIControler : MonoBehaviour
 {
-    [SerializeField] private GameObject Menu;
     [SerializeField] private GameObject PauseMenu;
     [SerializeField] private GameObject MainUI;
-    [SerializeField] private GameObject LoseText;
+    [SerializeField] private GameObject LoseMenu;
+    [SerializeField] private Text scorePauseMenu;
 
     public static UIControler Instance { get; set; }
 
@@ -18,23 +18,13 @@ public class UIControler : MonoBehaviour
         Instance = this;
     }
 
-    public void ShowMenu(){
-        Time.timeScale = 0f;
-        Menu.SetActive(true);
-        PauseMenu.SetActive(false);
-        MainUI.SetActive(false);
-    }
-
-    public void HideMenu(){
-        Menu.SetActive(false);
-    }
 
     public void ShowPauseMenu(){
-        Time.timeScale = 0f;
-        LoseText.SetActive(false);
-        Menu.SetActive(false);
+        scorePauseMenu.text = "Score : " + PlayerPrefs.GetInt("Score").ToString();
+        LoseMenu.SetActive(false);
         PauseMenu.SetActive(true);
         MainUI.SetActive(false);
+        Time.timeScale = 0f;
     }
 
     public void HidePauseMenu(){
@@ -42,7 +32,6 @@ public class UIControler : MonoBehaviour
     }
 
     public void ShowMainUI(){
-        Menu.SetActive(false);
         PauseMenu.SetActive(false);
         MainUI.SetActive(true);
     }
@@ -62,10 +51,16 @@ public class UIControler : MonoBehaviour
 
     }
 
+    public void ShowLoseMenu()
+    {
+        MainUI.SetActive(false);
+        LoseMenu.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
     public void Exit(){
         Time.timeScale = 0f;
-        ShowMenu();
-        ScoreManager.Instance.UpdateBestScoreText();
+        SceneManager.LoadScene("Menu");
     }
 
 }
